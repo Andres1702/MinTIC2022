@@ -1,0 +1,59 @@
+def prestamo(informacion: dict) -> dict:
+
+
+    id_prestamo = str(informacion.get("id_prestamo"))
+    casado = str(informacion.get("casado"))
+    dependientes =str(informacion.get("dependientes"))
+    if  dependientes == "3+":
+        dependientes = int(3) 
+    else:
+        dependientes =int(dependientes)
+    educacion = str(informacion.get("educacion"))
+    independiente =str(informacion.get("independientes"))
+    
+    ingreso_deudor = float(informacion.get("ingreso_deudor"))
+    i_d= ingreso_deudor
+    
+    ingreso_codeudor = float(informacion.get("ingreso_codeudor"))
+    i_c= ingreso_codeudor
+    
+    cantidad_prestamo = float(informacion.get("cantidad_prestamo"))
+    c_p= cantidad_prestamo
+    
+    plazo_prestamo = int(informacion.get("plazo_prestamo"))
+ 
+    
+    historia_credito = int(informacion.get("historia_credito"))
+    tipo_propiedad = str(informacion.get("tipo_propiedad"))
+    
+    
+    if historia_credito == 1:
+        if i_c>0 and (i_d/9) > c_p:
+            return {"id_prestamo": id_prestamo, 'aprobado': True} 
+        else:
+            if dependientes>2 and independiente == "si":
+                return {"id_prestamo": id_prestamo, 'aprobado': i_c/12>c_p} 
+            else: 
+                return {"id_prestamo": id_prestamo, 'aprobado': c_p<200} 
+            
+    else:
+        if independiente == "si":
+            if not(casado =="si" and dependientes>1):
+                
+                if i_d/10>c_p or i_c/10>c_p:
+                    return {"id_prestamo": id_prestamo, 'aprobado': c_p<180} 
+                else: 
+                    return {"id_prestamo": id_prestamo, 'aprobado': False}
+            else:
+                return {"id_prestamo": id_prestamo, 'aprobado': False}
+            
+         #"Semiurbano" Rural  Urbano 
+        else: 
+            if not(tipo_propiedad == "Semiurbano") and dependientes <2:
+                if educacion == "Graduado":
+                    return {"id_prestamo": id_prestamo, 'aprobado': i_d/11>c_p and i_c/11>c_p}
+                else:
+                    return  {"id_prestamo": id_prestamo, 'aprobado': False}
+            else:
+                return  {"id_prestamo": id_prestamo,'aprobado': False}
+            
