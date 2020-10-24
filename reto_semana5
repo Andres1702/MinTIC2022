@@ -1,0 +1,28 @@
+import pandas as pd
+
+def caso_who(ruta_archivo_csv: str)-> dict:
+    
+    if ruta_archivo_csv.endswith(".csv"):
+        
+        
+        try:
+            datos=pd.read_csv(ruta_archivo_csv)  
+            
+            datos['date']= pd.to_datetime(datos['date'])
+            
+            datos['resultado']=((datos['total_cases_per_million']*datos['population'])/1000000)/((datos['hospital_beds_per_thousand']*datos['population'])/1000)
+    
+            df_respuesta= datos.groupby(['date','continent'])['resultado'].mean().unstack()
+            
+            
+            
+            return df_respuesta.to_dict()
+        except:
+          return "Error al leer el archivo de datos."
+
+    else :
+        return "Extensión inválida."
+    
+#prueba
+        
+print(caso_who('owid-covid-data.csv'))
